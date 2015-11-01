@@ -18,5 +18,6 @@ public class TestingTeleop extends LinearOpMode {
         telemetry.addData("Actual Position", randomMotorPos);
         testingMotor.setPower(randomMotorPos);
         telemetry.addData("Percevied Position", testingMotor.getCurrentPosition());
+        testingMotor.setPower(0);
     }
 }
