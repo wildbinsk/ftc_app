@@ -2,6 +2,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -20,6 +21,8 @@ public class TeleOp extends OpMode {
         MotorRight = hardwareMap.dcMotor.get("RightMotor");
         MotorLeft = hardwareMap.dcMotor.get("LeftMotor");
         MotorRight.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        MotorRight.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         servo1 = hardwareMap.servo.get("servo1");
 
         servo1.setPosition(0);
