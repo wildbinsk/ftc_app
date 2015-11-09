@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 /**
- * Created by wilkes234 on 11/4/2015.
+ * Created by Declan Freeman-Gleason on 11/4/2015.
  */
 public class TeleOp extends OpMode {
     double servoPosition = 0;
@@ -38,6 +38,12 @@ public class TeleOp extends OpMode {
         Range.clip(leftTrigger, 0, 1);
         leftMotor = gamepad1.left_stick_y;
         rightMotor = gamepad1.right_stick_y;
+        if (!gamepad1.left_bumper) {
+            leftMotor = leftMotor / 3;
+        }
+        if (!gamepad1.right_bumper) {
+            rightMotor = rightMotor / 3;
+        }
         MotorRight.setPower(rightMotor);
         MotorLeft.setPower(leftMotor);
         leftTrigger = gamepad1.left_trigger;
