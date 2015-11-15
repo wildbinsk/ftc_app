@@ -56,6 +56,7 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
     manager.register("TeleOp", TeleOp.class );
     manager.register("Autonomous", EncoderTesting.class);
+    manager.register("Do Nothing", DoNothing.class);
 //    manager.register("Bob", BOB_THE_PROGRAM.class);
 //    manager.register("TestingTeleop", TestingTeleop.class);
 //    manager.register("EncoderTesting", EncoderTesting.class);
