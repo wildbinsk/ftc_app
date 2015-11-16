@@ -4,14 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 import com.qualcomm.robotcore.util.Range;
 
 /**
  * Created by Declan Freeman-Gleason on 11/4/2015.
  */
 public class TeleOp extends OpMode {
-    double servoPosition = 0;
-    boolean increment = true;
     Servo servo1;
     Servo servo2;
     DcMotor MotorRight_F;
@@ -20,7 +19,6 @@ public class TeleOp extends OpMode {
     DcMotor MotorLeft_B;
     @Override
     public void init() {
-        Range.clip(servoPosition, 0, 1);
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
@@ -33,7 +31,7 @@ public class TeleOp extends OpMode {
         MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         servo1 = hardwareMap.servo.get("servo1");
         servo2 = hardwareMap.servo.get("servo2");
-        servo1.setPosition(0);
+        servo1.setPosition(-1);
     }
 
     @Override
@@ -44,23 +42,27 @@ public class TeleOp extends OpMode {
         float leftMotor_B = 0;
         float leftTrigger = 0;
         float rightTrigger = 0;
-        Range.clip(rightMotor_F, 0, 1);
-        Range.clip(rightMotor_B, 0, 1);
-        Range.clip(leftMotor_F, 0, 1);
-        Range.clip(leftMotor_B, 0, 1);
-        Range.clip(leftTrigger, 0, 1);
+        Range.clip(rightMotor_F, -1, 1);
+        Range.clip(rightMotor_B, -1, 1);
+        Range.clip(leftMotor_F, -1, 1);
+        Range.clip(leftMotor_B, -1, 1);
+        Range.clip(leftTrigger, -1,1);
+        Range.clip(rightTrigger, -1, 1);
         leftMotor_F = gamepad1.left_stick_y;
         leftMotor_B = gamepad1.left_stick_y;
         rightMotor_F = gamepad1.right_stick_y;
         rightMotor_B = gamepad1.right_stick_y;
+        telemetry.addData("Stick / Motor Values Before Modification", leftMotor_F);
         if (!gamepad1.left_bumper) {
             leftMotor_F = leftMotor_F / 3;
-            rightMotor_B = rightMotor_B / 3;
+            leftMotor_B = leftMotor_B / 3;
         }
         if (!gamepad1.right_bumper) {
             rightMotor_F = rightMotor_F / 3;
             rightMotor_B = rightMotor_B / 3;
         }
+        telemetry.addData("Stick / Motor Values After Modification", leftMotor_F);
+//        telemetry.addData("Motor Values", "Motor Left Front: " + MotorLeft_F + ", Motor Left Back: " + MotorLeft_B + ", Motor Right Front: " + MotorRight_F + ", Motor Right Back: " + MotorRight_B);
         MotorRight_F.setPower(rightMotor_F);
         MotorRight_B.setPower(rightMotor_B);
         MotorLeft_F.setPower(leftMotor_F);
