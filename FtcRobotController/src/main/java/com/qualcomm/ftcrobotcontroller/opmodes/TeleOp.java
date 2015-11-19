@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.util.Range;
 public class TeleOp extends OpMode {
     Servo servo1;
     Servo servo2;
+    Servo servo3;
+    Servo servo4;
     DcMotor MotorRight_F;
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
@@ -31,7 +33,13 @@ public class TeleOp extends OpMode {
         MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         servo1 = hardwareMap.servo.get("servo1");
         servo2 = hardwareMap.servo.get("servo2");
+        servo3 = hardwareMap.servo.get("servo3");
+        servo4 = hardwareMap.servo.get("servo4");
         servo1.setPosition(-1);
+        servo2.setPosition(-1);
+        servo3.setPosition(-1);
+        servo4.setPosition(-1);
+
     }
 
     @Override
@@ -67,9 +75,13 @@ public class TeleOp extends OpMode {
         MotorRight_B.setPower(rightMotor_B);
         MotorLeft_F.setPower(leftMotor_F);
         MotorLeft_B.setPower(leftMotor_B);
-        leftTrigger = gamepad1.left_trigger;
+        leftTrigger = gamepad2.left_trigger;
         servo1.setPosition(leftTrigger);
-        rightTrigger = gamepad1.right_trigger;
+        rightTrigger = gamepad2.right_trigger;
         servo2.setPosition(rightTrigger);
+        if (gamepad2.a) {
+            servo4.setPosition(1);
+            servo3.setPosition(1);
+        }
     }
 }
