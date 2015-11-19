@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 /**
  * Created by wilkes234 on 11/15/2015.
  */
-public class Autonomous extends OpMode {
+public class Autonomous_MoveOneRotation extends OpMode {
     DcMotor MotorRight_F;
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
@@ -28,9 +28,9 @@ public class Autonomous extends OpMode {
         MotorRight_B.setPower(0.25);
         MotorLeft_B.setPower(0.25);
         // Set Motor Target Positions
-        MotorRight_F.setTargetPosition(PPM);
-        MotorLeft_F.setTargetPosition(PPM);
-        MotorRight_B.setTargetPosition(PPM);
-        MotorLeft_B.setTargetPosition(PPM);
+        MotorRight_F.setTargetPosition(PPM * 10);
+        MotorLeft_F.setTargetPosition(PPM * 10);
+        MotorRight_B.setTargetPosition(PPM * 10);
+        MotorLeft_B.setTargetPosition(PPM * 10);
     }
 }

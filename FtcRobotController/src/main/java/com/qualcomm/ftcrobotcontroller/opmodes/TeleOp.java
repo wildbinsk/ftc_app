@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by Declan Freeman-Gleason on 11/4/2015.
  */
 public class TeleOp extends OpMode {
+    float startTime;
     Servo servo1;
     Servo servo2;
     Servo servo3;
@@ -21,6 +22,7 @@ public class TeleOp extends OpMode {
     DcMotor MotorLeft_B;
     @Override
     public void init() {
+        startTime = 0;
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
@@ -80,8 +82,18 @@ public class TeleOp extends OpMode {
         rightTrigger = gamepad2.right_trigger;
         servo2.setPosition(rightTrigger);
         if (gamepad2.a) {
-            servo4.setPosition(1);
-            servo3.setPosition(1);
+            if (startTime == 0) {
+                startTime = System.currentTimeMillis();
+                servo4.setPosition(1);
+                servo3.setPosition(1);
+            } else {
+                if (System.currentTimeMillis() - startTime > 1000){
+                    servo4.setPosition(1);
+                    servo3.setPosition(1);
+                    startTime = 0;
+                }
+            }
+
         }
     }
 }
