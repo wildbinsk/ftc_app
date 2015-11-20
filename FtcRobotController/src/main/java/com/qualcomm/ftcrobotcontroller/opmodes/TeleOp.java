@@ -27,8 +27,8 @@ public class TeleOp extends OpMode {
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
         MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
-        MotorRight_F.setDirection(DcMotor.Direction.REVERSE);
-        MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft_F.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft_B.setDirection(DcMotor.Direction.REVERSE);
         MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -37,10 +37,10 @@ public class TeleOp extends OpMode {
         servo2 = hardwareMap.servo.get("servo2");
         servo3 = hardwareMap.servo.get("servo3");
         servo4 = hardwareMap.servo.get("servo4");
-        servo1.setPosition(-1);
-        servo2.setPosition(-1);
-        servo3.setPosition(-1);
-        servo4.setPosition(-1);
+        servo1.setPosition(1);
+        servo2.setPosition(1);
+        servo3.setPosition(0);
+        servo4.setPosition(0);
 
     }
 
@@ -56,8 +56,8 @@ public class TeleOp extends OpMode {
         Range.clip(rightMotor_B, -1, 1);
         Range.clip(leftMotor_F, -1, 1);
         Range.clip(leftMotor_B, -1, 1);
-        Range.clip(leftTrigger, -1,1);
-        Range.clip(rightTrigger, -1, 1);
+        Range.clip(leftTrigger, 0,1);
+        Range.clip(rightTrigger, 0, 1);
         leftMotor_F = gamepad1.left_stick_y;
         leftMotor_B = gamepad1.left_stick_y;
         rightMotor_F = gamepad1.right_stick_y;
@@ -78,9 +78,9 @@ public class TeleOp extends OpMode {
         MotorLeft_F.setPower(leftMotor_F);
         MotorLeft_B.setPower(leftMotor_B);
         leftTrigger = gamepad2.left_trigger;
-        servo1.setPosition(leftTrigger);
+        //servo1.setPosition(leftTrigger);
         rightTrigger = gamepad2.right_trigger;
-        servo2.setPosition(rightTrigger);
+        //servo2.setPosition(rightTrigger);
         if (gamepad2.a) {
             if (startTime == 0) {
                 startTime = System.currentTimeMillis();
