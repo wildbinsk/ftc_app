@@ -4,43 +4,96 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 import com.qualcomm.robotcore.util.Range;
 
 /**
- * Created by wilkes234 on 11/4/2015.
+ * Created by Declan Freeman-Gleason on 11/4/2015.
  */
 public class TeleOp extends OpMode {
-    double servoPosition = 0;
-    boolean increment = true;
+    float startTime;
     Servo servo1;
-    DcMotor MotorRight;
-    DcMotor MotorLeft;
+    Servo servo2;
+    Servo servo3;
+    Servo servo4;
+    DcMotor MotorRight_F;
+    DcMotor MotorLeft_F;
+    DcMotor MotorRight_B;
+    DcMotor MotorLeft_B;
     @Override
     public void init() {
-        Range.clip(servoPosition, 0, 1);
-        MotorRight = hardwareMap.dcMotor.get("RightMotor");
-        MotorLeft = hardwareMap.dcMotor.get("LeftMotor");
-        MotorRight.setDirection(DcMotor.Direction.REVERSE);
-        MotorLeft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        MotorRight.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        startTime = 0;
+        MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
+        MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
+        MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
+        MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
+        MotorLeft_F.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft_B.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         servo1 = hardwareMap.servo.get("servo1");
-
+        servo2 = hardwareMap.servo.get("servo2");
+        servo3 = hardwareMap.servo.get("servo3");
+        servo4 = hardwareMap.servo.get("servo4");
         servo1.setPosition(0);
+        servo2.setPosition(1);
+        servo3.setPosition(0);
+        servo4.setPosition(0);
+
     }
 
     @Override
     public void loop() {
-        float rightMotor = 0;
-        float leftMotor = 0;
+        float rightMotor_F = 0;
+        float rightMotor_B = 0;
+        float leftMotor_F = 0;
+        float leftMotor_B = 0;
         float leftTrigger = 0;
-        Range.clip(rightMotor, 0, 1);
-        Range.clip(leftMotor, 0, 1);
-        Range.clip(leftTrigger, 0, 1);
-        leftMotor = gamepad1.left_stick_y;
-        rightMotor = gamepad1.right_stick_y;
-        MotorRight.setPower(rightMotor);
-        MotorLeft.setPower(leftMotor);
-        leftTrigger = gamepad1.left_trigger;
+        float rightTrigger = 0;
+        Range.clip(rightMotor_F, -1, 1);
+        Range.clip(rightMotor_B, -1, 1);
+        Range.clip(leftMotor_F, -1, 1);
+        Range.clip(leftMotor_B, -1, 1);
+        Range.clip(leftTrigger, 0,1);
+        Range.clip(rightTrigger, 0, 1);
+        leftMotor_F = gamepad1.left_stick_y;
+        leftMotor_B = gamepad1.left_stick_y;
+        rightMotor_F = gamepad1.right_stick_y;
+        rightMotor_B = gamepad1.right_stick_y;
+        telemetry.addData("Stick / Motor Values Before Modification", leftMotor_F);
+        if (!gamepad1.left_bumper) {
+            leftMotor_F = leftMotor_F / 3;
+            leftMotor_B = leftMotor_B / 3;
+        }
+        if (!gamepad1.right_bumper) {
+            rightMotor_F = rightMotor_F / 3;
+            rightMotor_B = rightMotor_B / 3;
+        }
+        telemetry.addData("Stick / Motor Values After Modification", leftMotor_F);
+//        telemetry.addData("Motor Values", "Motor Left Front: " + MotorLeft_F + ", Motor Left Back: " + MotorLeft_B + ", Motor Right Front: " + MotorRight_F + ", Motor Right Back: " + MotorRight_B);
+        MotorRight_F.setPower(rightMotor_F);
+        MotorRight_B.setPower(rightMotor_B);
+        MotorLeft_F.setPower(leftMotor_F);
+        MotorLeft_B.setPower(leftMotor_B);
+        leftTrigger = gamepad2.left_trigger;
         servo1.setPosition(leftTrigger);
+        rightTrigger = gamepad2.right_trigger;
+        servo2.setPosition(rightTrigger);
+        if (gamepad2.a) {
+            if (startTime == 0) {
+                startTime = System.currentTimeMillis();
+                servo4.setPosition(1);
+                servo3.setPosition(1);
+            } else {
+                if (System.currentTimeMillis() - startTime > 1000){
+                    servo4.setPosition(1);
+                    servo3.setPosition(1);
+                    startTime = 0;
+                }
+            }
+
+        }
     }
 }
