@@ -37,7 +37,7 @@ public class TeleOp extends OpMode {
         servo2 = hardwareMap.servo.get("servo2");
         servo3 = hardwareMap.servo.get("servo3");
         servo4 = hardwareMap.servo.get("servo4");
-        servo1.setPosition(1);
+        servo1.setPosition(0);
         servo2.setPosition(1);
         servo3.setPosition(0);
         servo4.setPosition(0);
@@ -78,9 +78,9 @@ public class TeleOp extends OpMode {
         MotorLeft_F.setPower(leftMotor_F);
         MotorLeft_B.setPower(leftMotor_B);
         leftTrigger = gamepad2.left_trigger;
-        //servo1.setPosition(leftTrigger);
+        servo1.setPosition(leftTrigger);
         rightTrigger = gamepad2.right_trigger;
-        //servo2.setPosition(rightTrigger);
+        servo2.setPosition(rightTrigger);
         if (gamepad2.a) {
             if (startTime == 0) {
                 startTime = System.currentTimeMillis();

@@ -9,15 +9,12 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Declan Freeman-Gleason on 11/18/2015.
  */
 public class Autonomous_MoveToBox extends OpMode {
-    public double inchRotation = 0.31723728432;
-    Servo servo1;
-    Servo servo2;
-    Servo servo3;
-    Servo servo4;
     DcMotor MotorRight_F;
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
     DcMotor MotorLeft_B;
+    final int PPM = 1120;
+
     @Override
     public void init() {
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
@@ -30,46 +27,64 @@ public class Autonomous_MoveToBox extends OpMode {
         MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
         MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
         MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        servo1 = hardwareMap.servo.get("servo1");
-        servo2 = hardwareMap.servo.get("servo2");
-        servo1.setPosition(0);
-        servo2.setPosition(0);
-        servo3.setPosition(0);
-        servo4.setPosition(0);
+        MotorLeft_F.setTargetPosition(-6655);
+        MotorLeft_B.setTargetPosition(6655);
+        MotorRight_F.setTargetPosition(-6655);
+        MotorRight_B.setTargetPosition(6655);
+
+
     }
+
     @Override
     public void loop() {
-        MotorLeft_F.setTargetPosition(round(inchRotation * 112));
-        MotorRight_F.setTargetPosition(round(inchRotation * 112));
-        MotorLeft_B.setTargetPosition(round(inchRotation * 112));
-        MotorRight_B.setTargetPosition(round(inchRotation * 112));
+        telemetry.addData("PositionRF", MotorRight_F.getCurrentPosition());
+        telemetry.addData("PositionLF", MotorLeft_F.getCurrentPosition());
+        telemetry.addData("PositionRB", MotorRight_B.getCurrentPosition());
+        telemetry.addData("PositionLB", MotorLeft_B.getCurrentPosition());
+        telemetry.addData("PowerRF", MotorRight_F.getPower());
+        telemetry.addData("PowerLF", MotorRight_F.getPower());
+        telemetry.addData("PowerRB", MotorRight_F.getPower());
+        telemetry.addData("PowerLB", MotorRight_F.getPower());
         MotorLeft_F.setPower(0.25);
-        MotorRight_F.setPower(0.25);
-        MotorLeft_B.setPower(0.25);
         MotorRight_B.setPower(0.25);
-        if (MotorLeft_F.getCurrentPosition() + MotorRight_F.getCurrentPosition() + MotorRight_F.getCurrentPosition() + MotorRight_B.getCurrentPosition() >= inchRotation * 448) {
-            MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            MotorLeft_F.setPower(0);
+        MotorLeft_B.setPower(0.25);
+        if (Math.abs(MotorRight_F.getCurrentPosition()) >= 6655) {
             MotorRight_F.setPower(0);
-            MotorLeft_B.setPower(0);
-            MotorRight_B.setPower(0);
+        } else {
+            MotorRight_F.setPower(.25);
         }
-    }
-    private int round(double d){
-        double dAbs = Math.abs(d);
-        int i = (int) dAbs;
-        double result = dAbs - (double) i;
-        if(result<0.5){
-            return d<0 ? -i : i;
-        }else{
-            return d<0 ? -(i+1) : i+1;
+        if (Math.abs(MotorLeft_F.getCurrentPosition()) >= 6655) {
+            MotorLeft_F.setPower(0);
+        } else {
+            MotorLeft_F.setPower(.25);
         }
-    }
-//    public double inchesToRotations(double pInches) {
+        // Check if we are where we want to be
+//        if (Math.abs(MotorLeft_F.getCurrentPosition()) >= 6654.79868716 && Math.abs( MotorRight_F.getCurrentPosition() ) >= 6654.79868716 && Math.abs( MotorRight_F.getCurrentPosition() ) >= 6654.79868716 && ( MotorRight_B.getCurrentPosition()) >= 6654.79868716) {
+//            MotorLeft_F.setPower(0);
+//            MotorRight_F.setPower(0);
+//            MotorLeft_B.setPower(0);
+//            MotorRight_B.setPower(0);
+//            telemetry.addData("PowerRF", MotorRight_F.getPower());
+//            telemetry.addData("PowerLF", MotorRight_F.getPower());
+//            telemetry.addData("PowerRB", MotorRight_F.getPower());
+//            telemetry.addData("PowerLB", MotorRight_F.getPower());
+//            telemetry.addData("Debug", "Autonomous in intended position");
 //
-//        return pInches;
+//        }else {
+//            // Set Motor Power
+//            MotorRight_F.setPower(0.25);
+//            MotorLeft_F.setPower(0.25);
+//            MotorRight_B.setPower(0.25);
+//            MotorLeft_B.setPower(0.25);
+//            telemetry.addData("PowerRF", MotorRight_F.getPower());
+//            telemetry.addData("PowerLF", MotorRight_F.getPower());
+//            telemetry.addData("PowerRB", MotorRight_F.getPower());
+//            telemetry.addData("PowerLB", MotorRight_F.getPower());
+//        }
+//        telemetry.addData("PowerRF", MotorRight_F.getPower());
+//        telemetry.addData("PowerLF", MotorRight_F.getPower());
+//        telemetry.addData("PowerRB", MotorRight_F.getPower());
+//        telemetry.addData("PowerLB", MotorRight_F.getPower());
 //    }
+    }
 }

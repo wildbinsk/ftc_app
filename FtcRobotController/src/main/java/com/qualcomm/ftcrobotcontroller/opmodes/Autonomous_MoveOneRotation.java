@@ -19,17 +19,12 @@ public class Autonomous_MoveOneRotation extends OpMode {
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
         MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
-        MotorRight_F.setDirection(DcMotor.Direction.REVERSE);
-        MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
-        MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        // Set Motor Target Positions
-        MotorRight_F.setTargetPosition(-PPM);
-        MotorLeft_F.setTargetPosition(PPM);
-        MotorRight_B.setTargetPosition(-PPM);
-        MotorLeft_B.setTargetPosition(PPM);
+        MotorLeft_F.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft_B.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     }
 
     @Override
