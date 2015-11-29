@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
@@ -31,13 +32,11 @@ public class Autonomous_MoveToBox extends OpMode {
         MotorLeft_B.setTargetPosition(6655);
         MotorRight_F.setTargetPosition(-6655);
         MotorRight_B.setTargetPosition(6655);
-
-
     }
 
     @Override
     public void loop() {
-        telemetry.addData("PositionRF", MotorRight_F.getCurrentPosition());
+    telemetry.addData("PositionRF", MotorRight_F.getCurrentPosition());
         telemetry.addData("PositionLF", MotorLeft_F.getCurrentPosition());
         telemetry.addData("PositionRB", MotorRight_B.getCurrentPosition());
         telemetry.addData("PositionLB", MotorLeft_B.getCurrentPosition());
@@ -46,6 +45,7 @@ public class Autonomous_MoveToBox extends OpMode {
         telemetry.addData("PowerRB", MotorRight_F.getPower());
         telemetry.addData("PowerLB", MotorRight_F.getPower());
         MotorLeft_F.setPower(0.25);
+        MotorRight_F.setPower(0.25);
         MotorRight_B.setPower(0.25);
         MotorLeft_B.setPower(0.25);
         if (Math.abs(MotorRight_F.getCurrentPosition()) >= 6655) {
@@ -54,6 +54,16 @@ public class Autonomous_MoveToBox extends OpMode {
             MotorRight_F.setPower(.25);
         }
         if (Math.abs(MotorLeft_F.getCurrentPosition()) >= 6655) {
+            MotorLeft_F.setPower(0);
+        } else {
+            MotorLeft_F.setPower(.25);
+        }
+        if (Math.abs(MotorRight_B.getCurrentPosition()) >= 6655) {
+            MotorRight_F.setPower(0);
+        } else {
+            MotorRight_F.setPower(.25);
+        }
+        if (Math.abs(MotorLeft_B.getCurrentPosition()) >= 6655) {
             MotorLeft_F.setPower(0);
         } else {
             MotorLeft_F.setPower(.25);
