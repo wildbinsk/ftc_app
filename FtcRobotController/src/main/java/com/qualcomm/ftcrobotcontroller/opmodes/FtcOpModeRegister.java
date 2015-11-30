@@ -56,7 +56,8 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
     manager.register("TeleOp", TeleOp.class );
     manager.register(" ", DoNothing.class);
-    manager.register("Autonomous", Autonomous_MoveToBox.class);
+    manager.register("Autonomous", Autonomous_MoveWithTime.class);
+    manager.register("Autonomous, With Delay of ~5s", Autonomous_MoveWithTimeDelay.class);
     manager.register("Do Nothing", DoNothing.class);
     manager.register("  ", DoNothing.class);
     manager.register("Move 10 Rotations", Autonomous_MoveOneRotation.class);

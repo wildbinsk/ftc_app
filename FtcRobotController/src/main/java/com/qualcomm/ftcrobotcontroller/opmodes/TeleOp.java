@@ -8,10 +8,13 @@ import com.qualcomm.robotcore.robocol.Telemetry;
 import com.qualcomm.robotcore.util.Range;
 
 /**
- * Created by Declan Freeman-Gleason on 11/4/2015.
+ * Created by Declan Freeman-Gleason, Christopher Mentzer, and Cory Houser on 11/4/2015.
  */
 public class TeleOp extends OpMode {
     float startTime;
+    double servo3Pos;
+    double servo4Pos;
+    boolean servoPos;
     Servo servo1;
     Servo servo2;
     Servo servo3;
@@ -20,15 +23,19 @@ public class TeleOp extends OpMode {
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
     DcMotor MotorLeft_B;
+
     @Override
     public void init() {
         startTime = 0;
+        servoPos = true;
+        servo3Pos = 0;
+        servo4Pos = 0;
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
         MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
-        MotorLeft_F.setDirection(DcMotor.Direction.REVERSE);
-        MotorLeft_B.setDirection(DcMotor.Direction.REVERSE);
+        MotorRight_F.setDirection(DcMotor.Direction.REVERSE);
+        MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
         MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -39,7 +46,7 @@ public class TeleOp extends OpMode {
         servo4 = hardwareMap.servo.get("servo4");
         servo1.setPosition(0);
         servo2.setPosition(1);
-        servo3.setPosition(0);
+        servo3.setPosition(1);
         servo4.setPosition(0);
 
     }
@@ -50,14 +57,17 @@ public class TeleOp extends OpMode {
         float rightMotor_B = 0;
         float leftMotor_F = 0;
         float leftMotor_B = 0;
-        float leftTrigger = 0;
-        float rightTrigger = 0;
+        double leftTrigger = 0;
+        double rightTrigger = 0;
+        servo4Pos = gamepad2.right_stick_y;
         Range.clip(rightMotor_F, -1, 1);
         Range.clip(rightMotor_B, -1, 1);
         Range.clip(leftMotor_F, -1, 1);
         Range.clip(leftMotor_B, -1, 1);
-        Range.clip(leftTrigger, 0,1);
+        Range.clip(leftTrigger, 0, 1);
         Range.clip(rightTrigger, 0, 1);
+        Range.clip(servo3Pos, 0, 1);
+        Range.clip(servo4Pos, 0, 1);
         leftMotor_F = gamepad1.left_stick_y;
         leftMotor_B = gamepad1.left_stick_y;
         rightMotor_F = gamepad1.right_stick_y;
@@ -78,22 +88,65 @@ public class TeleOp extends OpMode {
         MotorLeft_F.setPower(leftMotor_F);
         MotorLeft_B.setPower(leftMotor_B);
         leftTrigger = gamepad2.left_trigger;
-        servo1.setPosition(leftTrigger);
-        rightTrigger = gamepad2.right_trigger;
-        servo2.setPosition(rightTrigger);
-        if (gamepad2.a) {
-            if (startTime == 0) {
-                startTime = System.currentTimeMillis();
-                servo4.setPosition(1);
-                servo3.setPosition(1);
-            } else {
-                if (System.currentTimeMillis() - startTime > 1000){
-                    servo4.setPosition(1);
-                    servo3.setPosition(1);
-                    startTime = 0;
-                }
-            }
-
+        servo2.setPosition(leftTrigger);
+        if (gamepad2.right_trigger > 0.5) {
+            rightTrigger = 0;
+        } else if (gamepad2.right_trigger < 0.5) {
+            rightTrigger = 1;
+        } else if (gamepad2.right_trigger == 0.5) {
+            rightTrigger = 0.5;
+        } else {
+            rightTrigger = 1;
         }
+        servo1.setPosition(rightTrigger);
+//        if (gamepad2.a) {
+//            if (startTime == 0) {
+//                startTime = System.currentTimeMillis();
+//                servo4.setPosition(0);
+//                servo3.setPosition(1);
+//            } else {
+//                if (System.currentTimeMillis() - startTime > 1000){
+//                    servo4.setPosition(1);
+//                    servo3.setPosition(0);
+//                    startTime = 0;
+//                }
+//            }
+//}
+
+//        if (gamepad2.a) {
+//            servo4.setPosition(1);
+//            servo3.setPosition(0);
+//        }
+//        if (gamepad2.b) {
+//            servo4.setPosition(0);
+//            servo3.setPosition(1);
+//        }
+
+        if (gamepad2.left_stick_y > 0.5) {
+            servo3Pos = 0;
+        } else if (gamepad2.left_stick_y < 0.5) {
+            servo3Pos = 1;
+        } else if (gamepad2.left_stick_y == 0.5) {
+            servo3Pos = 0.5;
+        } else {
+            servo3Pos = 1;
+        }
+        servo3.setPosition(servo3Pos);
+        servo4.setPosition(servo4Pos);
+//        if (gamepad2.a) {
+//            if (servoPos) {
+//                servo4.setPosition(Range.clip(servo4.getPosition() - 0.2, 0, 0.8));
+//                servo3.setPosition(Range.clip(servo3.getPosition() + 0.2, 0, 1));
+//                if (servo4.getPosition() + servo3.getPosition() >= 1) {
+//                    servoPos = false;
+//                }
+//            } else {
+//                servo4.setPosition(Range.clip(servo4.getPosition() + 0.2, 0, 0.8));
+//                servo3.setPosition(Range.clip(servo3.getPosition() - 0.2, 0, 0.8));
+//                if (servo4.getPosition() + servo3.getPosition() >= 1) {
+//                    servoPos = true;
+//                }
+//            }
+//        }
     }
 }
