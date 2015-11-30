@@ -12,6 +12,8 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class TeleOp extends OpMode {
     float startTime;
+    double servo3Pos;
+    double servo4Pos;
     boolean servoPos;
     Servo servo1;
     Servo servo2;
@@ -26,6 +28,8 @@ public class TeleOp extends OpMode {
     public void init() {
         startTime = 0;
         servoPos = true;
+        servo3Pos = 0;
+        servo4Pos = 0;
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
@@ -42,8 +46,8 @@ public class TeleOp extends OpMode {
         servo4 = hardwareMap.servo.get("servo4");
         servo1.setPosition(0);
         servo2.setPosition(1);
-        servo3.setPosition(1);
-        servo4.setPosition(0);
+        servo3.setPosition(0);
+        servo4.setPosition(1);
 
     }
 
@@ -55,12 +59,15 @@ public class TeleOp extends OpMode {
         float leftMotor_B = 0;
         double leftTrigger = 0;
         double rightTrigger = 0;
+        servo4Pos = gamepad2.right_stick_y;
         Range.clip(rightMotor_F, -1, 1);
         Range.clip(rightMotor_B, -1, 1);
         Range.clip(leftMotor_F, -1, 1);
         Range.clip(leftMotor_B, -1, 1);
         Range.clip(leftTrigger, 0, 1);
         Range.clip(rightTrigger, 0, 1);
+        Range.clip(servo3Pos, 0, 1);
+        Range.clip(servo4Pos, 0, 1);
         leftMotor_F = gamepad1.left_stick_y;
         leftMotor_B = gamepad1.left_stick_y;
         rightMotor_F = gamepad1.right_stick_y;
@@ -91,7 +98,7 @@ public class TeleOp extends OpMode {
         } else {
             rightTrigger = 1;
         }
-        servo2.setPosition(rightTrigger);
+        servo1.setPosition(rightTrigger);
 //        if (gamepad2.a) {
 //            if (startTime == 0) {
 //                startTime = System.currentTimeMillis();
@@ -106,15 +113,26 @@ public class TeleOp extends OpMode {
 //            }
 //}
 
-        if (gamepad2.a) {
-            servo4.setPosition(1);
-            servo3.setPosition(0);
-        }
-        if (gamepad2.b) {
-            servo4.setPosition(0);
-            servo3.setPosition(1);
-        }
+//        if (gamepad2.a) {
+//            servo4.setPosition(1);
+//            servo3.setPosition(0);
+//        }
+//        if (gamepad2.b) {
+//            servo4.setPosition(0);
+//            servo3.setPosition(1);
+//        }
 
+        if (gamepad2.left_stick_y > 0.5) {
+            servo3Pos = 0;
+        } else if (gamepad2.left_stick_y < 0.5) {
+            servo3Pos = 1;
+        } else if (gamepad2.left_stick_y == 0.5) {
+            servo3Pos = 0.5;
+        } else {
+            servo3Pos = 1;
+        }
+        servo3.setPosition(servo3Pos);
+        servo4.setPosition(servo4Pos);
 //        if (gamepad2.a) {
 //            if (servoPos) {
 //                servo4.setPosition(Range.clip(servo4.getPosition() - 0.2, 0, 0.8));
