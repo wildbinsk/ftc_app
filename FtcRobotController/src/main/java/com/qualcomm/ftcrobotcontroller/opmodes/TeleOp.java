@@ -34,8 +34,8 @@ public class TeleOp extends OpMode {
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
         MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
-//        MotorRight_F.setDirection(DcMotor.Direction.REVERSE);
-//        MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
+        MotorRight_F.setDirection(DcMotor.Direction.REVERSE);
+        MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
         MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -46,8 +46,8 @@ public class TeleOp extends OpMode {
         servo4 = hardwareMap.servo.get("servo4");
         servo1.setPosition(0);
         servo2.setPosition(1);
-        servo3.setPosition(0);
-        servo4.setPosition(1);
+        servo3.setPosition(1);
+        servo4.setPosition(0);
 
     }
 
@@ -88,7 +88,7 @@ public class TeleOp extends OpMode {
         MotorLeft_F.setPower(leftMotor_F);
         MotorLeft_B.setPower(leftMotor_B);
         leftTrigger = gamepad2.left_trigger;
-        servo1.setPosition(leftTrigger);
+        servo2.setPosition(leftTrigger);
         if (gamepad2.right_trigger > 0.5) {
             rightTrigger = 0;
         } else if (gamepad2.right_trigger < 0.5) {
