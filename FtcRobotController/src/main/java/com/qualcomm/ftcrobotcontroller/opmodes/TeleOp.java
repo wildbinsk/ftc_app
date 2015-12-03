@@ -23,7 +23,6 @@ public class TeleOp extends OpMode {
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
     DcMotor MotorLeft_B;
-
     @Override
     public void init() {
         startTime = 0;
@@ -36,6 +35,8 @@ public class TeleOp extends OpMode {
         MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
         MotorRight_F.setDirection(DcMotor.Direction.REVERSE);
         MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
+        MotorLeft_F.setDirection(DcMotor.Direction.FORWARD);
+        MotorLeft_B.setDirection(DcMotor.Direction.FORWARD);
         MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
@@ -44,11 +45,10 @@ public class TeleOp extends OpMode {
         servo2 = hardwareMap.servo.get("servo2");
         servo3 = hardwareMap.servo.get("servo3");
         servo4 = hardwareMap.servo.get("servo4");
-        servo1.setPosition(0);
-        servo2.setPosition(1);
+        servo1.setPosition(1);
+        servo2.setPosition(0);
         servo3.setPosition(1);
         servo4.setPosition(0);
-
     }
 
     @Override
@@ -59,15 +59,12 @@ public class TeleOp extends OpMode {
         float leftMotor_B = 0;
         double leftTrigger = 0;
         double rightTrigger = 0;
-        servo4Pos = gamepad2.right_stick_y;
-        Range.clip(rightMotor_F, -1, 1);
-        Range.clip(rightMotor_B, -1, 1);
-        Range.clip(leftMotor_F, -1, 1);
-        Range.clip(leftMotor_B, -1, 1);
-        Range.clip(leftTrigger, 0, 1);
-        Range.clip(rightTrigger, 0, 1);
-        Range.clip(servo3Pos, 0, 1);
-        Range.clip(servo4Pos, 0, 1);
+        rightMotor_F = Range.clip(rightMotor_F, -1, 1);
+        rightMotor_B = Range.clip(rightMotor_B, -1, 1);
+        leftMotor_F = Range.clip(leftMotor_F, -1, 1);
+        leftMotor_B = Range.clip(leftMotor_B, -1, 1);
+        leftTrigger = Range.clip(leftTrigger, 0, 1);
+        rightTrigger = Range.clip(rightTrigger, 0, 1);
         leftMotor_F = gamepad1.left_stick_y;
         leftMotor_B = gamepad1.left_stick_y;
         rightMotor_F = gamepad1.right_stick_y;
@@ -122,15 +119,15 @@ public class TeleOp extends OpMode {
 //            servo3.setPosition(1);
 //        }
 
-        if (gamepad2.left_stick_y > 0.5) {
-            servo3Pos = 0;
-        } else if (gamepad2.left_stick_y < 0.5) {
-            servo3Pos = 1;
-        } else if (gamepad2.left_stick_y == 0.5) {
-            servo3Pos = 0.5;
-        } else {
-            servo3Pos = 1;
+        if (gamepad2.left_stick_y >= 0.2) {
+            servo3Pos -= 0.1;
+            servo4Pos += 0.1;
+        } else if (gamepad2.left_stick_y <= -0.2) {
+            servo3Pos += 0.1;
+            servo4Pos -= 0.1;
         }
+        servo3Pos = Range.clip(servo3Pos, 0, 1);
+        servo4Pos = Range.clip(servo4Pos, 0, 1);
         servo3.setPosition(servo3Pos);
         servo4.setPosition(servo4Pos);
 //        if (gamepad2.a) {
