@@ -22,6 +22,7 @@ public class TeleOp extends OpMode {
     Servo servo2;
     Servo servo3;
     Servo servo4;
+    Servo servo5;
     DcMotor MotorRight_F;
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
@@ -62,6 +63,7 @@ public class TeleOp extends OpMode {
         servo2 = hardwareMap.servo.get("servo2");
         servo3 = hardwareMap.servo.get("servo3");
         servo4 = hardwareMap.servo.get("servo4");
+        servo5 = hardwareMap.servo.get("servo5");
         servo1.setPosition(1);
         servo2.setPosition(0);
         servo3.setPosition(1);
@@ -180,6 +182,7 @@ public class TeleOp extends OpMode {
         servo4Pos = Range.clip(servo4Pos, 0, 1);
         servo3.setPosition(servo3Pos);
         servo4.setPosition(servo4Pos);
+        servo5.setPosition(servo5Pos);
 //        if (gamepad2.a) {
 //            if (servoPos) {
 //                servo4.setPosition(Range.clip(servo4.getPosition() - 0.2, 0, 0.8));
