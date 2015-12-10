@@ -66,8 +66,9 @@ public class TeleOp extends OpMode {
         servo5 = hardwareMap.servo.get("servo5");
         servo1.setPosition(1);
         servo2.setPosition(0);
-        servo3.setPosition(1);
-        servo4.setPosition(0);
+        servo3.setPosition(0);
+        servo4.setPosition(1);
+        servo5.setPosition(0);
     }
 
     @Override
@@ -78,12 +79,6 @@ public class TeleOp extends OpMode {
         float leftMotor_B = 0;
         double leftTrigger = 0;
         double rightTrigger = 0;
-        rightMotor_F = Range.clip(rightMotor_F, -1, 1);
-        rightMotor_B = Range.clip(rightMotor_B, -1, 1);
-        leftMotor_F = Range.clip(leftMotor_F, -1, 1);
-        leftMotor_B = Range.clip(leftMotor_B, -1, 1);
-        leftTrigger = Range.clip(leftTrigger, 0, 1);
-        rightTrigger = Range.clip(rightTrigger, 0, 1);
         if (gamepad1.a && !aDown) {
             aDown = true;
         } else if (!gamepad1.a && aDown) {
@@ -178,8 +173,15 @@ public class TeleOp extends OpMode {
         } else if (gamepad2.right_stick_y <= -0.2) {
             servo5Pos -= 0.1;
         }
+        rightMotor_F = Range.clip(rightMotor_F, -1, 1);
+        rightMotor_B = Range.clip(rightMotor_B, -1, 1);
+        leftMotor_F = Range.clip(leftMotor_F, -1, 1);
+        leftMotor_B = Range.clip(leftMotor_B, -1, 1);
+        leftTrigger = Range.clip(leftTrigger, 0, 1);
+        rightTrigger = Range.clip(rightTrigger, 0, 1);
         servo3Pos = Range.clip(servo3Pos, 0, 1);
         servo4Pos = Range.clip(servo4Pos, 0, 1);
+        servo5Pos = Range.clip(servo5Pos, 0, 1);
         servo3.setPosition(servo3Pos);
         servo4.setPosition(servo4Pos);
         servo5.setPosition(servo5Pos);

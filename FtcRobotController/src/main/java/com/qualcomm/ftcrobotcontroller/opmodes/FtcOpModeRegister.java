@@ -61,6 +61,9 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Do Nothing", DoNothing.class);
     manager.register("  ", DoNothing.class);
     manager.register("Move 10 Rotations", Autonomous_MoveOneRotation.class);
+    manager.register("   ", DoNothing.class);
+    manager.register("Motor Test", RunMotor.class);
+
 //    manager.register("Bob", BOB_THE_PROGRAM.class);
 //    manager.register("TestingTeleop", TestingTeleop.class);
 //    manager.register("EncoderTesting", EncoderTesting.class);
