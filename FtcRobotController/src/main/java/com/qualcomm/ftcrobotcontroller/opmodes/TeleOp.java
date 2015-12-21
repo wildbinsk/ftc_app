@@ -18,15 +18,19 @@ public class TeleOp extends OpMode {
     boolean servoPos;
     boolean direction;
     boolean aDown;
+    double ArmPower;
+	double ArmServo;
     Servo servo1;
     Servo servo2;
     Servo servo3;
     Servo servo4;
     Servo servo5;
+	Servo servo6;
     DcMotor MotorRight_F;
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
     DcMotor MotorLeft_B;
+    DcMotor ArmMotor;
     @Override
     public void init() {
         // True: Plow is on the backside of the robot, False: Plow is on the front.
@@ -36,11 +40,14 @@ public class TeleOp extends OpMode {
         servoPos = true;
         servo3Pos = 0;
         servo4Pos = 0;
-        servo5Pos = 0;
+        servo5Pos = 1;
+        ArmPower = 0;
+        ArmServo = 0;
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
         MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
+        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
         // True: Plow is on the backside of the robot, False: Plow is on the front.
         if (direction) {
             // Plow is on the backside
@@ -64,11 +71,13 @@ public class TeleOp extends OpMode {
         servo3 = hardwareMap.servo.get("servo3");
         servo4 = hardwareMap.servo.get("servo4");
         servo5 = hardwareMap.servo.get("servo5");
+		servo6 = hardwareMap.servo.get("servo6");
         servo1.setPosition(1);
         servo2.setPosition(0);
         servo3.setPosition(0);
         servo4.setPosition(1);
-        servo5.setPosition(0);
+        servo5.setPosition(1);
+		servo6.setPosition(0);
     }
 
     @Override
@@ -79,6 +88,7 @@ public class TeleOp extends OpMode {
         float leftMotor_B = 0;
         double leftTrigger = 0;
         double rightTrigger = 0;
+        ArmPower = 0;
         if (gamepad1.a && !aDown) {
             aDown = true;
         } else if (!gamepad1.a && aDown) {
@@ -120,14 +130,23 @@ public class TeleOp extends OpMode {
             rightMotor_F = rightMotor_F / 3;
             rightMotor_B = rightMotor_B / 3;
         }
+        if (gamepad2.x) {
+            ArmServo += 0.1;
+        } else if (gamepad2.b) {
+            ArmServo -= 0.1;
+        }
         telemetry.addData("Stick / Motor Values After Modification", leftMotor_F);
 //        telemetry.addData("Motor Values", "Motor Left Front: " + MotorLeft_F + ", Motor Left Back: " + MotorLeft_B + ", Motor Right Front: " + MotorRight_F + ", Motor Right Back: " + MotorRight_B);
         MotorRight_F.setPower(rightMotor_F);
         MotorRight_B.setPower(rightMotor_B);
         MotorLeft_F.setPower(leftMotor_F);
         MotorLeft_B.setPower(leftMotor_B);
+
+
+
         leftTrigger = gamepad2.left_trigger;
         servo2.setPosition(leftTrigger);
+
         if (gamepad2.right_trigger > 0.5) {
             rightTrigger = 0;
         } else if (gamepad2.right_trigger < 0.5) {
@@ -137,6 +156,7 @@ public class TeleOp extends OpMode {
         } else {
             rightTrigger = 1;
         }
+        
         servo1.setPosition(rightTrigger);
 //        if (gamepad2.a) {
 //            if (startTime == 0) {
@@ -173,18 +193,27 @@ public class TeleOp extends OpMode {
         } else if (gamepad2.right_stick_y <= -0.2) {
             servo5Pos -= 0.1;
         }
+
+		if (gamepad2.dpad_up) {
+			ArmPower = 0.2;
+		} else if (gamepad2.dpad_down) {
+			ArmPower = -0.2;
+		}
         rightMotor_F = Range.clip(rightMotor_F, -1, 1);
         rightMotor_B = Range.clip(rightMotor_B, -1, 1);
         leftMotor_F = Range.clip(leftMotor_F, -1, 1);
         leftMotor_B = Range.clip(leftMotor_B, -1, 1);
         leftTrigger = Range.clip(leftTrigger, 0, 1);
         rightTrigger = Range.clip(rightTrigger, 0, 1);
+        ArmPower = Range.clip(ArmPower, -1, 1);
+        ArmServo = Range.clip(ArmServo, 0, 1);
         servo3Pos = Range.clip(servo3Pos, 0, 1);
         servo4Pos = Range.clip(servo4Pos, 0, 1);
         servo5Pos = Range.clip(servo5Pos, 0, 1);
         servo3.setPosition(servo3Pos);
         servo4.setPosition(servo4Pos);
-        servo5.setPosition(servo5Pos);
+        ArmMotor.setPower(ArmPower);
+        servo6.setPosition(ArmServo);
 //        if (gamepad2.a) {
 //            if (servoPos) {
 //                servo4.setPosition(Range.clip(servo4.getPosition() - 0.2, 0, 0.8));

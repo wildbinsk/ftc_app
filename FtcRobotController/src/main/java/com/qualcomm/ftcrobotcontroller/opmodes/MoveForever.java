@@ -9,8 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Declan Freeeman-Gleason on 11/21/2015.
  * A small change
  */
-public class Autonomous_MoveWithTime extends OpMode {
-    double startTime;
+public class MoveForever extends OpMode {
     Servo servo1;
     Servo servo2;
     Servo servo3;
@@ -22,7 +21,6 @@ public class Autonomous_MoveWithTime extends OpMode {
     DcMotor MotorLeft_B;
     @Override
     public void init() {
-        startTime = 0;
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
@@ -31,8 +29,8 @@ public class Autonomous_MoveWithTime extends OpMode {
         MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
         MotorLeft_F.setDirection (DcMotor.Direction.FORWARD);
         MotorLeft_B.setDirection (DcMotor.Direction.FORWARD);
-        MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        MotorLeft_F.setChannelMode (DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        MotorRight_F.setChannelMode (DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 		servo1 = hardwareMap.servo.get("servo1");
@@ -48,26 +46,10 @@ public class Autonomous_MoveWithTime extends OpMode {
     }
 
     @Override
-    public void start() {
-        startTime = System.currentTimeMillis();
-        telemetry.addData("Debug", System.currentTimeMillis() - startTime);
-        super.start();
-    }
-
-    @Override
     public void loop() {
-        if (System.currentTimeMillis() - startTime <= 3002) {
-            telemetry.addData("Debug", System.currentTimeMillis() - startTime);
-            MotorLeft_F.setPower(0.25);
-            MotorRight_F.setPower(0.25);
-            MotorRight_B.setPower(0.25);
-            MotorLeft_B.setPower(0.25);
-        } else {
-            telemetry.addData("Debug", "Done with program.");
-            MotorLeft_F.setPower(0);
-            MotorRight_F.setPower(0);
-            MotorRight_B.setPower(0);
-            MotorLeft_B.setPower(0);
-        }
+        MotorLeft_F.setPower(0.25);
+        MotorRight_F.setPower(0.25);
+        MotorRight_B.setPower(0.25);
+        MotorLeft_B.setPower(0.25);
     }
 }
