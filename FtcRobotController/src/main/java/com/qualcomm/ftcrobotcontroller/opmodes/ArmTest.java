@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -18,9 +19,10 @@ public class ArmTest extends OpMode {
 	public void init() {
 		// True: Plow is on the backside of the robot, False: Plow is on the front.
 		ArmPower = 0;
-		ArmServo = 0;
+		ArmServo = 1;
+		ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
 		servo6 = hardwareMap.servo.get("servo6");
-		servo6.setPosition(0);
+		servo6.setPosition(ArmServo);
 	}
 	@Override
 	public void loop () {
@@ -33,7 +35,11 @@ public class ArmTest extends OpMode {
 			ArmPower = 0.2;
 		} else if (gamepad2.dpad_down) {
 			ArmPower = -0.2;
+		} else {
+			ArmPower = 0;
 		}
+		double ArmServoRealPos = servo6.getPosition();
+		telemetry.addData ("Arm Servo Position", ArmServoRealPos);
 		ArmPower = Range.clip (ArmPower, -1, 1);
 		ArmServo = Range.clip(ArmServo, 0, 1);
 		ArmMotor.setPower(ArmPower);

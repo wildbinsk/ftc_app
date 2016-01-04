@@ -47,7 +47,7 @@ public class TeleOp extends OpMode {
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
         MotorLeft_B = hardwareMap.dcMotor.get("LeftMotorB");
-        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
+//        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
         // True: Plow is on the backside of the robot, False: Plow is on the front.
         if (direction) {
             // Plow is on the backside
@@ -182,11 +182,11 @@ public class TeleOp extends OpMode {
 //        }
 
         if (gamepad2.left_stick_y >= 0.2) {
-            servo3Pos -= 0.1;
-            servo4Pos += 0.1;
-        } else if (gamepad2.left_stick_y <= -0.2) {
             servo3Pos += 0.1;
             servo4Pos -= 0.1;
+        } else if (gamepad2.left_stick_y <= -0.2) {
+            servo3Pos -= 0.1;
+            servo4Pos += 0.1;
         }
         if (gamepad2.right_stick_y >= 0.2) {
             servo5Pos += 0.1;

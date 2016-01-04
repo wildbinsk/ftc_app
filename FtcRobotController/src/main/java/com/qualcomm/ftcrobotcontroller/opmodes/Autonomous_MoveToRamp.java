@@ -8,8 +8,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by Declan Freeman-Gleason on 12/12/2015.
  */
-public class AutonomousMoveToRamp extends OpMode {
+public class Autonomous_MoveToRamp extends OpMode {
 	double startTime;
+	final static double CIRC = 18.8495559215;
 	Servo servo1;
 	Servo servo2;
 	Servo servo3;
@@ -30,10 +31,10 @@ public class AutonomousMoveToRamp extends OpMode {
 		MotorRight_B.setDirection(DcMotor.Direction.REVERSE);
 		MotorLeft_F.setDirection (DcMotor.Direction.FORWARD);
 		MotorLeft_B.setDirection (DcMotor.Direction.FORWARD);
-		MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-		MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-		MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-		MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+		MotorLeft_F.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+		MotorRight_F.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+		MotorLeft_B.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+		MotorRight_B.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 		servo1 = hardwareMap.servo.get("servo1");
 		servo2 = hardwareMap.servo.get("servo2");
 		servo3 = hardwareMap.servo.get("servo3");
@@ -58,6 +59,14 @@ public class AutonomousMoveToRamp extends OpMode {
 
 	@Override
 	public void loop () {
-
+		int TARGETROTATIONS = (int) Math.round ( CIRC * 112 );
+		MotorRight_F.setPower (.25);
+		MotorLeft_B.setPower (.25);
+		MotorRight_B.setPower (.25);
+		MotorLeft_F.setPower (.25);
+		MotorRight_F.setTargetPosition (TARGETROTATIONS);
+		MotorLeft_B.setTargetPosition (TARGETROTATIONS);
+		MotorRight_B.setTargetPosition (TARGETROTATIONS);
+		MotorLeft_F.setTargetPosition (TARGETROTATIONS);
 	}
 }
