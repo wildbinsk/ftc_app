@@ -8,9 +8,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by Declan Freeman-Gleason on 12/12/2015.
  */
+
+// IMPORTANT!!! THIS PROGRAM IS NONFUNCTIONAL AND IS ONLY PROVIDED AS A REFERENCE
+
 public class Autonomous_MoveToRamp extends OpMode {
 	double startTime;
-	final static double CIRC = 18.8495559215;
+	final static double CIRC = 18.8495559215; // This number is Pi * 6 Which is the diameter of the Wheels of the Circuit Breaker's Robot
 	Servo servo1;
 	Servo servo2;
 	Servo servo3;
@@ -40,11 +43,6 @@ public class Autonomous_MoveToRamp extends OpMode {
 		servo3 = hardwareMap.servo.get("servo3");
 		servo4 = hardwareMap.servo.get("servo4");
 		servo5 = hardwareMap.servo.get("servo5");
-		servo1.setPosition(1);
-		servo2.setPosition(0);
-		servo3.setPosition(0);
-		servo4.setPosition(1);
-		servo5.setPosition(1);
 	}
 
 	@Override

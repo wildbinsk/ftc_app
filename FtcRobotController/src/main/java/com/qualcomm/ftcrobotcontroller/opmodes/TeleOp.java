@@ -20,12 +20,15 @@ public class TeleOp extends OpMode {
     boolean aDown;
     double ArmPower;
 	double ArmServo;
+    double CoryArmRight;
+    double CoryArmLeft;
     Servo servo1;
     Servo servo2;
     Servo servo3;
     Servo servo4;
     Servo servo5;
 	Servo servo6;
+    Servo servo7;
     DcMotor MotorRight_F;
     DcMotor MotorLeft_F;
     DcMotor MotorRight_B;
@@ -40,9 +43,11 @@ public class TeleOp extends OpMode {
         servoPos = true;
         servo3Pos = 1;
         servo4Pos = 1;
-        servo5Pos = 0;
+        servo5Pos = 1;
         ArmPower = 0;
         ArmServo = 0;
+		CoryArmLeft = 0;
+		CoryArmRight = 1;
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
@@ -72,12 +77,14 @@ public class TeleOp extends OpMode {
         servo4 = hardwareMap.servo.get("servo4");
         servo5 = hardwareMap.servo.get("servo5");
 		servo6 = hardwareMap.servo.get("servo6");
+        servo7 = hardwareMap.servo.get("servo7");
         servo1.setPosition(1);
         servo2.setPosition(0);
         servo3.setPosition(0.8);
         servo4.setPosition(0.2);
         servo5.setPosition(1);
 		servo6.setPosition(0);
+		servo7.setPosition(1);
     }
 
     @Override
@@ -130,11 +137,16 @@ public class TeleOp extends OpMode {
             rightMotor_F = rightMotor_F / 3;
             rightMotor_B = rightMotor_B / 3;
         }
-        if (gamepad2.x) {
-            ArmServo += 0.1;
+        if(gamepad2.x){
+			CoryArmLeft += 0.1;
         } else if (gamepad2.b) {
-            ArmServo -= 0.1;
+            CoryArmLeft -= 0.1;
         }
+		if(gamepad2.y){
+			CoryArmRight += 0.1;
+		} else if (gamepad2.a){
+			CoryArmRight -= 0.1;
+		}
         telemetry.addData("Stick / Motor Values After Modification", leftMotor_F);
 //        telemetry.addData("Motor Values", "Motor Left Front: " + MotorLeft_F + ", Motor Left Back: " + MotorLeft_B + ", Motor Right Front: " + MotorRight_F + ", Motor Right Back: " + MotorRight_B);
         MotorRight_F.setPower(rightMotor_F);
@@ -210,11 +222,15 @@ public class TeleOp extends OpMode {
         servo3Pos = Range.clip(servo3Pos, 0, 0.8);
         servo4Pos = Range.clip(servo4Pos, 0.2, 1);
         servo5Pos = Range.clip(servo5Pos, 0, 1);
+		CoryArmLeft = Range.clip(CoryArmLeft, 0, 1);
+		CoryArmRight = Range.clip(CoryArmRight, 1, 0);
         servo3.setPosition(servo3Pos);
         servo4.setPosition(servo4Pos);
 //        ArmMotor.setPower(ArmPower);
-        servo6.setPosition(ArmServo);
-//        if (gamepad2.a) {
+		servo5.setPosition (servo5Pos);
+        servo6.setPosition(CoryArmLeft);
+        servo7.setPosition(CoryArmRight);
+		//        if (gamepad2.a) {
 //            if (servoPos) {
 //                servo4.setPosition(Range.clip(servo4.getPosition() - 0.2, 0, 0.8));
 //                servo3.setPosition(Range.clip(servo3.getPosition() + 0.2, 0, 1));

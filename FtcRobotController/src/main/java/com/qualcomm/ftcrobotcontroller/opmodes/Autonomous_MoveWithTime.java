@@ -9,8 +9,12 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by Declan Freeeman-Gleason on 11/21/2015.
  * A small change
  */
+
+// What does this program do?
+    // This program moves the motors at a constant speed for a set amount of time, 3502 milleseconds ( 3.502 seconds ) to be exact.
+
 public class Autonomous_MoveWithTime extends OpMode {
-    double startTime;
+    double startTime; // Variable that holds a value for the time
     Servo servo1;
     Servo servo2;
     Servo servo3;
@@ -22,7 +26,7 @@ public class Autonomous_MoveWithTime extends OpMode {
     DcMotor MotorLeft_B;
     @Override
     public void init() {
-        startTime = 0;
+        startTime = 0; // Set the start time to 0, this is just in case. If the program does what it is supposed to do then this won't matter.
         MotorRight_F = hardwareMap.dcMotor.get("RightMotorF");
         MotorLeft_F = hardwareMap.dcMotor.get("LeftMotorF");
         MotorRight_B = hardwareMap.dcMotor.get("RightMotorB");
@@ -48,26 +52,28 @@ public class Autonomous_MoveWithTime extends OpMode {
     }
 
     @Override
-    public void start() {
-        startTime = System.currentTimeMillis();
-        telemetry.addData("Debug", System.currentTimeMillis() - startTime);
-        super.start();
+    public void start() { // This is run when the program starts
+        startTime = System.currentTimeMillis(); // Set the start time to the current time
+        telemetry.addData("Debug", System.currentTimeMillis() - startTime); // Send the time between setting the start time and now
+        super.start(); // Start the loop
     }
 
     @Override
     public void loop() {
-        if (System.currentTimeMillis() - startTime <= 3002) {
-            telemetry.addData("Debug", System.currentTimeMillis() - startTime);
-            MotorLeft_F.setPower(0.25);
-            MotorRight_F.setPower(0.25);
-            MotorRight_B.setPower(0.25);
-            MotorLeft_B.setPower(0.25);
-        } else {
-            telemetry.addData("Debug", "Done with program.");
-            MotorLeft_F.setPower(0);
-            MotorRight_F.setPower(0);
-            MotorRight_B.setPower(0);
-            MotorLeft_B.setPower(0);
+        if (System.currentTimeMillis() - startTime <= 3502) { // Has it been more than 3.502 seconds since the program started?
+            // No, it has been less than 3.502 seconds since the program started.
+            telemetry.addData("Debug", System.currentTimeMillis() - startTime); // Send how long it has been since the program started
+            MotorLeft_F.setPower(0.25); // Set the power for the motors to 25% power
+            MotorRight_F.setPower(0.25); // Set the power for the motors to 25% power
+            MotorRight_B.setPower(0.25); // Set the power for the motors to 25% power
+            MotorLeft_B.setPower(0.25); // Set the power for the motors to 25% power
+        } else { // Has it been more than 3.502 seconds since the program started?
+            // It has been more than 3.502 seconds since the program started, the robot should stop moving soon
+            telemetry.addData ("Debug", "Done with program. Finished in " + (System.currentTimeMillis () - startTime) + " Milleseconds."); // Say that the program is done, and how long it took.
+            MotorLeft_F.setPower(0); // Set the power for the motors to 0% power, the robot should stop now
+            MotorRight_F.setPower(0); // Set the power for the motors to 0% power, the robot should stop now
+            MotorRight_B.setPower(0); // Set the power for the motors to 0% power, the robot should stop now
+            MotorLeft_B.setPower(0); // Set the power for the motors to 0% power, the robot should stop now
         }
     }
 }
