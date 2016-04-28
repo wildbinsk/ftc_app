@@ -67,7 +67,8 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Move Forever", MoveForever.class);
     manager.register("Arm Test", ArmTest.class);
     manager.register("Encoder Move to Ramp", Autonomous_MoveToRamp.class);
-
+    manager.register("     ", DoNothing.class);
+    manager.register("West Sound STEM Showcase Program", STEMControl.class);
     /*
      * Uncomment any of the following lines if you want to register an op mode.
      */
