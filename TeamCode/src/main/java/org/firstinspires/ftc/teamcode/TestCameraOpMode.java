@@ -29,17 +29,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.arcrobotics.ftclib.geometry.Transform2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.spartronics4915.lib.T265Camera;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -58,13 +53,17 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="Test T265", group="Iterative Opmode")
 public class TestCameraOpMode extends OpMode
 {
+    // We treat this like a singleton because there should only ever be one object per camera
+    private static T265Camera slamra = null;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        T265Camera cam = new T265Camera(new Transform2d(), 0.1);
-        cam.start((up) -> System.out.println(up.pose));
+        if (slamra == null) {
+            slamra = new T265Camera(new Transform2d(), 0.1, hardwareMap.appContext);
+        }
     }
 
     /*
@@ -79,7 +78,10 @@ public class TestCameraOpMode extends OpMode
      */
     @Override
     public void start() {
-
+        slamra.start((up) -> {
+            telemetry.addData("pose", up.pose);
+            Log.e("[ftc265]", up.pose.toString());
+        });
     }
 
     /*
@@ -94,6 +96,7 @@ public class TestCameraOpMode extends OpMode
      */
     @Override
     public void stop() {
+        slamra.stop();
     }
 
 }

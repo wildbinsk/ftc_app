@@ -102,16 +102,9 @@ android {
 }
 
 repositories {
-    jcenter()
-
     flatDir {
         dirs rootProject.file('libs')
     }
-}
-
-dependencies {
-    implementation(name: "ftc265-release", ext: "aar")
-    implementation 'com.arcrobotics:ftclib:2.0.11'
 }
 
 apply from: 'build.release.gradle'

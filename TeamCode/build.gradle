@@ -10,6 +10,17 @@
 
 
 // Custom definitions may go here
-
 // Include common definitions from above.
 apply from: '../build.common.gradle'
+
+repositories {
+    jcenter()
+
+    maven {
+        url "https://maven.0x778.tk"
+    }
+}
+
+dependencies {
+    implementation 'com.spartronics4915.lib:ftc265:1.0.0'
+}
