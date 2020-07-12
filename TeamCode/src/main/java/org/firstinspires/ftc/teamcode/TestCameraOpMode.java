@@ -43,6 +43,8 @@ public class TestCameraOpMode extends OpMode
         Canvas field = packet.fieldOverlay();
 
         T265Camera.CameraUpdate up = slamra.getLastReceivedCameraUpdate();
+        if (up == null) return;
+
         // We divide by 0.0254 to convert meters to inches
         Translation2d translation = new Translation2d(up.pose.getTranslation().getX() / 0.0254, up.pose.getTranslation().getY() / 0.0254);
         Rotation2d rotation = up.pose.getRotation();
