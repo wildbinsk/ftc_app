@@ -55,6 +55,11 @@ public class TestCameraOpMode extends OpMode
         double x2 = translation.getX() + arrowX, y2 = translation.getY() + arrowY;
         field.strokeLine(x1, y1, x2, y2);
 
+
+        telemetry.addData("T265 x",translation.getX());
+        telemetry.addData("T265 y",translation.getY());
+        telemetry.update();
+
         dashboard.sendTelemetryPacket(packet);
     }
 
