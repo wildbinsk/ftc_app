@@ -24,3 +24,11 @@ repositories {
 dependencies {
     implementation 'com.spartronics4915.lib:ftc265:2.0.1'
 }
+
+dependencies {
+    implementation 'org.openftc:easyopencv:1.4.1'
+}
+
+dependencies {
+    implementation 'org.openftc:opencv-repackaged:4.1.0-C'
+}
